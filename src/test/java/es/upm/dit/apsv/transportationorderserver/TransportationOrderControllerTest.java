@@ -128,4 +128,30 @@ public class TransportationOrderControllerTest {
 
        }
 
+
+       @Test
+       public void testGetOrder() throws Exception {
+           // Configuramos el mock del repositorio para un camión existente
+           when(repository.findById("8962ZKR")).thenReturn(Optional.of(
+                   new TransportationOrder("28", "8962ZKR", 1591682400000L,
+                           40.4562191, -3.8707211, 1591692196000L, 
+                           42.0206372, -4.5330132, 0, 0.0, 0.0, 0)));
+   
+           // Realizamos la solicitud GET para obtener el pedido de transporte con el ID de camión "8962ZKR"
+           RequestBuilder request = MockMvcRequestBuilders
+                   .get("/transportationorders/8962ZKR")
+                   .accept(MediaType.APPLICATION_JSON);
+   
+           // Verificamos que la respuesta sea 200 OK
+           mockMvc.perform(request)
+                   .andExpect(status().isOk()) // Verifica que el estado de la respuesta sea 200 OK
+                   .andExpect(jsonPath("$.id", is("28"))) // Verifica que el ID del pedido sea 28
+                   .andExpect(jsonPath("$.truck", is("8962ZKR"))) // Verifica que el ID del camión sea 8962ZKR
+                   .andExpect(jsonPath("$.startLocation.lat", is(40.4562191))) // Verifica la latitud del inicio
+                   .andExpect(jsonPath("$.startLocation.lon", is(-3.8707211))) // Verifica la longitud del inicio
+                   .andReturn();
+       }
+       
+
+
 }
