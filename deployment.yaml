@@ -1,71 +1,38 @@
-Versión de API : v1
-
-tipo : Servicio
-
-metadatos :
-
-  nombre : transportationorderserver-srv
-
-especificación :
-
-  selector :
-
-    aplicación : transportorderserver
-
-  puertos :
-
-  - protocolo : TCP
-
-    puerto : 80
-
-    puerto de destino : 8080
-
-  tipo : Balanceador de carga
+apiVersion: v1
+kind: Service
+metadata:
+  name: transportationorderserver-srv
+spec:
+  selector:
+    app: transportationorderserver
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 8080
+  type: LoadBalancer
 
 ---
 
-apiVersion : aplicaciones/v1
-
-tipo : Implementación
-
-metadatos :
-
-  nombre : transportationorderserver -dpl
-
-  etiquetas :
-
-    aplicación : transportorderserver
-
-especificación :
-
-  réplicas : 1
-
-  selector :
-
-    etiquetas de coincidencia :
-
-      aplicación : transportorderserver
-
-  plantilla :
-
-    metadatos :
-
-      etiquetas :
-
-        aplicación : transportorderserver
-
-    especificación :
-
-      Contenedores :
-
-      - nombre : transportationorderserver
-
-        imagen : ghcr.io/gabriela-ojeda561/tos
-
-        puertos :
-
-        - Puerto del contenedor : 8080
-
-      Secretos de la imagen :
-
-      - nombre : github-registry
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: transportationorderserver-dpl
+  labels:
+    app: transportationorderserver
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: transportationorderserver
+  template:
+    metadata:
+      labels:
+        app: transportationorderserver
+    spec:
+      containers:
+        - name: transportationorderserver
+          image: ghcr.io/gabriela-ojeda561/tos
+          ports:
+            - containerPort: 8080
+      imagePullSecrets:
+        - name: github-registry
