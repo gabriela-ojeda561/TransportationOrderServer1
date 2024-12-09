@@ -60,7 +60,7 @@ especificación :
 
       - nombre : transportationorderserver
 
-        imagen : ghcr.io/ gabriela-ojeda561 /tos
+        imagen : ghcr.io/gabriela-ojeda561/tos
 
         puertos :
 
