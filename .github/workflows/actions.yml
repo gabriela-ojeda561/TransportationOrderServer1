@@ -83,7 +83,8 @@ jobs:
           push: true
 
           tags: ghcr.io/gabriela-ojeda561/tos:latest
-          deploy:
+         
+  deploy:
 
     needs: verify-and-package
 
